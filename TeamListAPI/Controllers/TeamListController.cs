@@ -43,10 +43,23 @@ namespace TeamListAPI.Controllers
 
         //get route to get list of all teams
         [HttpGet("team")]
-        public async Task<ActionResult<IEnumerable<Team>>> GetTeams() 
+        public async Task<ActionResult<IEnumerable<Team>>> GetTeams(string sortBy="N/A") 
         {
-            //return a list of all teams within the Teams set
-            return await context.Teams.ToListAsync();
+            switch (sortBy.ToLower())
+            {
+                //return all teams regardless of order
+                case "n/a":
+                    return await context.Teams.ToListAsync();
+                //return all teams ordered by location
+                case "location":
+                    return await context.Teams.OrderBy(team => team.Name).ToListAsync();
+                //return all teams ordered by Name
+                case "name":
+                    return await context.Teams.OrderBy(team => team.Name).ToListAsync();
+                default:
+                    return NotFound("Improper search query");
+            }
+            
         }
 
         //get route to get a specific team
@@ -63,6 +76,8 @@ namespace TeamListAPI.Controllers
             //else return the team
             return team;
         }
+
+        
 
 
     }
