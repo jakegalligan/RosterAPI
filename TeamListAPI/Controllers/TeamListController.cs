@@ -41,7 +41,7 @@ namespace TeamListAPI.Controllers
         }
         //----------------------GET ROUTES--------------------
 
-        //get route to get list of all teams
+        //get route to get list of all teams in sorted or nonsorted order
         [HttpGet("team")]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeams(string sortBy="N/A") 
         {
@@ -52,7 +52,7 @@ namespace TeamListAPI.Controllers
                     return await context.Teams.ToListAsync();
                 //return all teams ordered by location
                 case "location":
-                    return await context.Teams.OrderBy(team => team.Name).ToListAsync();
+                    return await context.Teams.OrderBy(team => team.Location).ToListAsync();
                 //return all teams ordered by Name
                 case "name":
                     return await context.Teams.OrderBy(team => team.Name).ToListAsync();
@@ -77,7 +77,15 @@ namespace TeamListAPI.Controllers
             return team;
         }
 
-        
+        //get route for all players
+        [HttpGet("player")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        {
+            return await context.Players.ToListAsync();
+        }
+
+
+
 
 
     }
