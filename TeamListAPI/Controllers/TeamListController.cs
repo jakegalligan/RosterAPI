@@ -79,9 +79,17 @@ namespace TeamListAPI.Controllers
 
         //get route for all players
         [HttpGet("player")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
-        {
-            return await context.Players.ToListAsync();
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers(string lastName)
+        {   
+            //if there is no lastname query return all players
+            if (lastName == null)
+            {
+                return await context.Players.ToListAsync();
+       
+            //if lastName query is specified return all players that match the given lastName
+            } else {
+                return await context.Players.Where(player => player.LastName == lastName).ToListAsync();
+            }
         }
 
         //get route to get a specific player
@@ -99,6 +107,7 @@ namespace TeamListAPI.Controllers
             return player;
         }
 
+  
 
 
     }
