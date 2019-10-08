@@ -84,7 +84,20 @@ namespace TeamListAPI.Controllers
             return await context.Players.ToListAsync();
         }
 
-
+        //get route to get a specific player
+        [HttpGet("player/{id}")]
+        public async Task<ActionResult<Player>> GetPlayerById(long id)
+        {
+            //get specific palyer from set of players
+            var player = await context.Players.FindAsync(id);
+            //if the player is undefined return an error 
+            if (player == null)
+            {
+                return NotFound("No player matching given id");
+            }
+            //else return the player
+            return player;
+        }
 
 
 
