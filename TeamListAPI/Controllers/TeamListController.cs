@@ -62,7 +62,7 @@ namespace TeamListAPI.Controllers
             
         }
 
-        //get route to get a specific team
+        //get a specific team
         [HttpGet("team/{id}")]
        public async Task<ActionResult<Team>> GetTeamById (long id)
         {
@@ -77,7 +77,23 @@ namespace TeamListAPI.Controllers
             return team;
         }
 
-        //get route for all players
+        //get all plyers on a team
+        [HttpGet("team/{id}/players")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayersOnTeam (long id)
+        {
+            //get specific team from set of Teams
+            var team = await context.Teams.FindAsync(id);
+            //if the team is undefined return an error as team isn't in Team List
+            if (team == null)
+            {
+                return NotFound();
+            }
+            //else return the players on the team
+            return team.Players;
+        } 
+
+
+        //get route all players with an option to query by lastName
         [HttpGet("player")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers(string lastName)
         {   
@@ -92,7 +108,7 @@ namespace TeamListAPI.Controllers
             }
         }
 
-        //get route to get a specific player
+        //get a specific player
         [HttpGet("player/{id}")]
         public async Task<ActionResult<Player>> GetPlayerById(long id)
         {
@@ -107,6 +123,7 @@ namespace TeamListAPI.Controllers
             return player;
         }
 
+       
   
 
 
