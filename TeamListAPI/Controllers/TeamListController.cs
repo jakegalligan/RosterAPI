@@ -49,6 +49,21 @@ namespace TeamListAPI.Controllers
             return await context.Teams.ToListAsync();
         }
 
+        //get route to get a specific team
+        [HttpGet("team/{id}")]
+       public async Task<ActionResult<Team>> GetTeamById (long id)
+        {
+            //get specific team from set of Teams
+            var team = await context.Teams.FindAsync(id);
+            //if the team is undefined return an error as team isn't in Team List
+            if (team == null)
+            {
+                return NotFound();
+            }
+            //else return the team
+            return team;
+        }
+
 
     }
 }
