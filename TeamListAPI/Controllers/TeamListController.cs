@@ -43,9 +43,9 @@ namespace TeamListAPI.Controllers
 
         //get route to get list of all teams in sorted or nonsorted order
         [HttpGet("team")]
-        public async Task<ActionResult<IEnumerable<Team>>> GetTeams(string sortBy="N/A") 
+        public async Task<ActionResult<IEnumerable<Team>>> GetTeams(string orderBy="N/A") 
         {
-            switch (sortBy.ToLower())
+            switch (orderBy.ToLower())
             {
                 //return all teams regardless of order
                 case "n/a":
@@ -122,10 +122,49 @@ namespace TeamListAPI.Controllers
             //else return the player
             return player;
         }
+        //----------------------PUT ROUTES--------------------
+        //put route to remove or add players to a team
+        [HttpPut("team/{teamId}/player{playerId}")]
+        public async Task<ActionResult> AddOrRemovePlayerFromTeam (long teamId, long playerId, string action)
+        {
 
-       
-  
+            //see if player and teams exist
+            Team team = await GetTeamById(teamId);
+            Player player = GetPlayerById(playerId);
+            //check if user wants to add or remove player
+            switch (action.ToLower())
+            {
+                case "remove":
+                //if player isn't on team return error
+                if (!team.Players.Contains(player))
+                    {
+                        return NotFound("Player not found on team");
+                    }
+                //remove player from team
+                 team.Players.Remove(player);
+                //return action complete
+
+                case "add":
+                //if player is already on team return error
+                if (team.Players.Contains(player))
+                    {
+                        return NotFound("Player already on team");
+                    }
+                //if team has more 8 players already return error
+                    if (team.Players.count() == 8)
+                    {
+                        return NotFound("Unable to add player, roster limit of 8 exceeded")
+                    }
+                    //add player to team
+                    team.Players.add(player);
+                    //RETURN STATEMENT
 
 
+                //check if player is on team(if they are add an error)
+                
+
+                    
+            }
+        }
     }
 }
