@@ -7,11 +7,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TeamListAPI.Models
 {
+    //declare a team model with an id, name(required), location(required), and a list of all players on the team.
     public class Team
     {
         public long Id { get; set; }
-        [Required(ErrorMessage ="Name is required")]
+        [Required(ErrorMessage ="Team Name is required")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Team Location is required")]
         public string Location { get; set; }
         public List<Player> Players { get; set; }
     }

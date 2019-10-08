@@ -8,7 +8,7 @@ using TeamListAPI.Models;
 namespace TeamListAPI.Controllers
 {
     //create route for api and make api respond to webApi requests
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class TeamListController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace TeamListAPI.Controllers
         }
 
         //post route to create a team
-        [HttpPost]
+        [HttpPost("team")]
         public async Task<ActionResult<Team>> CreateTeam(Team team)
         {
             context.Teams.Add(team);
