@@ -18,12 +18,13 @@ namespace TeamListAPI.Controllers
         {
             context = _context;
         }
+        //----------------------POST ROUTES--------------------
 
         //post route to create a team
         [HttpPost("team")]
         public async Task<ActionResult<Team>> CreateTeam(Team team)
         {
-            //save team to teams set in teamlistcontext 
+            //save team to Teams set in teamlistcontext 
             context.Teams.Add(team);
             await context.SaveChangesAsync();
             return team;
@@ -33,10 +34,21 @@ namespace TeamListAPI.Controllers
         [HttpPost("player")]
         public async Task<ActionResult<Player>> CreatePlayer(Player player)
         {
-            //save player to players set in playerlistcontext 
+            //save player to Players set in playerlistcontext 
             context.Players.Add(player);
             await context.SaveChangesAsync();
             return player;
         }
+        //----------------------GET ROUTES--------------------
+
+        //get route to get list of all teams
+        [HttpGet("team")]
+        public async Task<ActionResult<IEnumerable<Team>>> GetTeams() 
+        {
+            //return a list of all teams within the Teams set
+            return await context.Teams.ToListAsync();
+        }
+
+
     }
 }
