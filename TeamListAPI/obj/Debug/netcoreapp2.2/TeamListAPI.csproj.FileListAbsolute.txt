@@ -1,0 +1,14 @@
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\bin\Debug\netcoreapp2.2\TeamListAPI.deps.json
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\bin\Debug\netcoreapp2.2\TeamListAPI.runtimeconfig.json
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\bin\Debug\netcoreapp2.2\TeamListAPI.runtimeconfig.dev.json
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\bin\Debug\netcoreapp2.2\TeamListAPI.dll
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\bin\Debug\netcoreapp2.2\TeamListAPI.pdb
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.csprojAssemblyReference.cache
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.csproj.CoreCompileInputs.cache
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.RazorAssemblyInfo.cache
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.RazorAssemblyInfo.cs
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.AssemblyInfoInputs.cache
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.AssemblyInfo.cs
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.RazorTargetAssemblyInfo.cache
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.dll
+C:\Users\galli\source\repos\TeamListAPI\TeamListAPI\obj\Debug\netcoreapp2.2\TeamListAPI.pdb

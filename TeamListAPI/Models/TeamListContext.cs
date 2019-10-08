@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace TeamListAPI.Models
 {
-    public class TeamListContext
+    public class TeamListContext : DbContext
     {
+        public TeamListContext(DbContextOptions<TeamListContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Player> Players { get; set; }
     }
 }
