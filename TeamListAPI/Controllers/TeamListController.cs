@@ -129,8 +129,8 @@ namespace TeamListAPI.Controllers
         {
 
             //see if player and teams exist
-            Team team = await GetTeamById(teamId);
-            Player player = GetPlayerById(playerId);
+            Team team =  context.Teams.Find(teamId);
+            Player player = context.Players.Find(playerId);
             //check if user wants to add or remove player
             switch (action.ToLower())
             {
@@ -142,7 +142,8 @@ namespace TeamListAPI.Controllers
                     }
                 //remove player from team
                  team.Players.Remove(player);
-                //return action complete
+                //return a response showing the player and team which the player was removed from
+                 return Ok("Removed" + player + "from" + team);
 
                 case "add":
                 //if player is already on team return error
@@ -151,19 +152,16 @@ namespace TeamListAPI.Controllers
                         return NotFound("Player already on team");
                     }
                 //if team has more 8 players already return error
-                    if (team.Players.count() == 8)
+                    if (team.Players.Count() == 8)
                     {
-                        return NotFound("Unable to add player, roster limit of 8 exceeded")
+                        return NotFound("Unable to add player, roster limit of 8 exceeded");
                     }
                     //add player to team
-                    team.Players.add(player);
-                    //RETURN STATEMENT
+                    team.Players.Add(player);
+                    return Ok("Added" + player + "from" + team);
 
-
-                //check if player is on team(if they are add an error)
-                
-
-                    
+                default:
+                    return NotFound("Improper search query");
             }
         }
     }
