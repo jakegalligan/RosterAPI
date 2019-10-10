@@ -24,8 +24,9 @@ namespace TeamListAPI.Controllers
         [HttpPost("team")]
         public async Task<ActionResult<Team>> CreateTeam(Team team)
         {
+            var teamToAdd = new Team { Name = team.Name, Location = team.Location};
             //save team to Teams set in teamlistcontext 
-            context.Teams.Add(team);
+            context.Teams.Add(teamToAdd);
             await context.SaveChangesAsync();
             return team;
 
@@ -45,6 +46,7 @@ namespace TeamListAPI.Controllers
         [HttpGet("team")]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeams(string orderBy="N/A") 
         {
+
             switch (orderBy.ToLower())
             {
                 //return all teams regardless of order
@@ -79,17 +81,18 @@ namespace TeamListAPI.Controllers
 
         //get all plyers on a team
         [HttpGet("team/{id}/players")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayersOnTeam (long id)
+        public async Task<ActionResult<List<Player>>> GetPlayersOnTeam (long id)
         {
             //get specific team from set of Teams
             var team = await context.Teams.FindAsync(id);
+
             //if the team is undefined return an error as team isn't in Team List
             if (team == null)
             {
                 return NotFound();
             }
             //else return the players on the team
-            return team.Players;
+            return Ok();
         } 
 
 
@@ -124,40 +127,49 @@ namespace TeamListAPI.Controllers
         }
         //----------------------PUT ROUTES--------------------
         //put route to remove or add players to a team
-        [HttpPut("team/{teamId}/player{playerId}")]
+        [HttpPut("team/{teamId}/player/{playerId}")]
         public async Task<ActionResult> AddOrRemovePlayerFromTeam (long teamId, long playerId, string action)
         {
 
             //see if player and teams exist
-            Team team =  context.Teams.Find(teamId);
-            Player player = context.Players.Find(playerId);
+            Team team =  await context.Teams.FindAsync(teamId);
+            Player player =  await context.Players.FindAsync(playerId);
+            if (team == null || player == null)
+            {
+                return NotFound("Unable to find team or player");
+            }
+
             //check if user wants to add or remove player
             switch (action.ToLower())
             {
                 case "remove":
-                //if player isn't on team return error
-                if (!team.Players.Contains(player))
-                    {
-                        return NotFound("Player not found on team");
-                    }
-                //remove player from team
-                 team.Players.Remove(player);
-                //return a response showing the player and team which the player was removed from
-                 return Ok("Removed" + player + "from" + team);
+                    //if player isn't on team return error
+                    if (!team.PlayerList.Contains(player))
+                        {
+                            return NotFound("Player not found on team");
+                        }
+                    //remove player from team
+                     team.PlayerList.Remove(player);
+                     context.SaveChanges();
+                    //return a response showing the player and team which the player was removed from
+                     return Ok("Removed" + player + "from" + team);
 
                 case "add":
-                //if player is already on team return error
-                if (team.Players.Contains(player))
-                    {
-                        return NotFound("Player already on team");
-                    }
-                //if team has more 8 players already return error
-                    if (team.Players.Count() == 8)
-                    {
-                        return NotFound("Unable to add player, roster limit of 8 exceeded");
-                    }
+                    //if player is already on team return error
+                    if (player.TeamId == team.Id) 
+                        {
+                            return NotFound("Player already on team");
+                        }
+                    //if team has more 8 players already return error
+                        if (team.playerCount == 8)
+                        {
+                            return NotFound("Unable to add player, roster limit of 8 exceeded");
+                        }
                     //add player to team
-                    team.Players.Add(player);
+                    player.TeamId= team.Id;
+                    //increment count for team
+                    team.playerCount += 1;
+                    await context.SaveChangesAsync();
                     return Ok("Added" + player + "from" + team);
 
                 default:
