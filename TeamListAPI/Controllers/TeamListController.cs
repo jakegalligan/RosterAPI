@@ -29,7 +29,7 @@ namespace TeamListAPI.Controllers
             //if there is a duplicateTeam return an error
             if (duplicateTeam != null)
             {
-                return NotFound("Team already exists");
+                return BadRequest("Team already exists");
             } else
             {
                 //otherwise save team to database 
@@ -67,7 +67,7 @@ namespace TeamListAPI.Controllers
                 case "name":
                     return await context.Teams.OrderBy(team => team.Name).ToListAsync();
                 default:
-                    return NotFound("Improper search query");
+                    return BadRequest("Improper search query");
             }
             
         }
@@ -81,7 +81,7 @@ namespace TeamListAPI.Controllers
             //if the team is undefined return an error as team isn't in Team List
             if (team == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             //else return the team
             return team;
@@ -91,16 +91,16 @@ namespace TeamListAPI.Controllers
         [HttpGet("team/{id}/players")]
         public async Task<ActionResult<List<Player>>> GetPlayersOnTeam (long id)
         {
-            //get specific team from set of Teams
-            var team = await context.Teams.FindAsync(id);
+            //get all players that play for a specified team
+            var players = context.Players.Where(x => x.TeamId == id);
 
             //if the team is undefined return an error as team isn't in Team List
-            if (team == null)
+            if (players == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             //else return the players on the team
-            return Ok();
+            return Ok(players);
         } 
 
 
@@ -128,7 +128,7 @@ namespace TeamListAPI.Controllers
             //if the player is undefined return an error 
             if (player == null)
             {
-                return NotFound("No player matching given id");
+                return BadRequest("No player matching given id");
             }
             //else return the player
             return player;
@@ -144,7 +144,7 @@ namespace TeamListAPI.Controllers
             Player player =  await context.Players.FindAsync(playerId);
             if (team == null || player == null)
             {
-                return NotFound("Unable to find team or player");
+                return BadRequest("Unable to find team or player");
             }
 
             //check if user wants to add or remove player
@@ -154,7 +154,7 @@ namespace TeamListAPI.Controllers
                     //if player isn't on team return error
                     if (player.TeamId != team.Id)
                         {
-                            return NotFound("Player not found on team");
+                            return BadRequest("Player not found on team");
                         }
                     //remove player from team
                      player.TeamId = 0;
@@ -167,17 +167,17 @@ namespace TeamListAPI.Controllers
                     //check if the player is currently on another team
                     if (player.TeamId != null && player.TeamId != team.Id)
                     {
-                        return NotFound("Player already on team, please remove player from current team");
+                        return BadRequest("Player already on team, please remove player from current team");
                     }
                     //if player is already on team return error
                     if (player.TeamId == team.Id) 
                         {
-                            return NotFound("Player already on team");
+                            return BadRequest("Player already on team");
                         }
                     //if team has more 8 players already return error
                         if (team.PlayerCount == 8)
                         {
-                            return NotFound("Unable to add player, roster limit of 8 exceeded");
+                            return BadRequest("Unable to add player, roster limit of 8 exceeded");
                         }
                     //add player to team
                     player.TeamId= team.Id;
@@ -187,7 +187,7 @@ namespace TeamListAPI.Controllers
                     return Ok("Added " + player.FirstName + " " + player.LastName + " to " + team.Name);
 
                 default:
-                    return NotFound("Improper search query");
+                    return BadRequest("Improper search query");
             }
         }
     }
