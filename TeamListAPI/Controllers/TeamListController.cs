@@ -164,6 +164,11 @@ namespace TeamListAPI.Controllers
                      return Ok("Removed" + player.FirstName + player.LastName + "from" + team.Name);
 
                 case "add":
+                    //check if the player is currently on another team
+                    if (player.TeamId != null && player.TeamId != team.Id)
+                    {
+                        return NotFound("Player already on team, please remove player from current team");
+                    }
                     //if player is already on team return error
                     if (player.TeamId == team.Id) 
                         {

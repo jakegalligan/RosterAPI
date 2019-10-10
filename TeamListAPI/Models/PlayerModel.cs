@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using java.lang;
 
 namespace TeamListAPI.Models
 {
@@ -15,7 +16,7 @@ namespace TeamListAPI.Models
         [Required(ErrorMessage = "Team Name is required")]
 
         public string LastName { get; set; }
-        public long TeamId { get; set; }
+        public Long TeamId { get; set; }
 
     }
 }
