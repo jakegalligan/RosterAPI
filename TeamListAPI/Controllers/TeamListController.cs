@@ -24,11 +24,19 @@ namespace TeamListAPI.Controllers
         [HttpPost("team")]
         public async Task<ActionResult<Team>> CreateTeam(Team team)
         {
-            var teamToAdd = new Team { Name = team.Name, Location = team.Location};
-            //save team to Teams set in teamlistcontext 
-            context.Teams.Add(teamToAdd);
-            await context.SaveChangesAsync();
-            return team;
+            //check to see if team with location and name already exists
+            var duplicateTeam = context.Teams.Where(t => t.Name == team.Name && t.Location == team.Location).FirstOrDefault();
+            //if there is a duplicateTeam return an error
+            if (duplicateTeam != null)
+            {
+                return NotFound("Team already exists");
+            } else
+            {
+                //otherwise save team to database 
+                context.Teams.Add(team);
+                await context.SaveChangesAsync();
+                return team;
+            }
 
         }
         //post route to create a player
@@ -144,15 +152,16 @@ namespace TeamListAPI.Controllers
             {
                 case "remove":
                     //if player isn't on team return error
-                    if (!team.PlayerList.Contains(player))
+                    if (player.TeamId != team.Id)
                         {
                             return NotFound("Player not found on team");
                         }
                     //remove player from team
-                     team.PlayerList.Remove(player);
+                     player.TeamId = 0;
+                     team.playerCount -= 1;
                      context.SaveChanges();
                     //return a response showing the player and team which the player was removed from
-                     return Ok("Removed" + player + "from" + team);
+                     return Ok("Removed" + player.FirstName + player.LastName + "from" + team.Name);
 
                 case "add":
                     //if player is already on team return error
@@ -170,7 +179,7 @@ namespace TeamListAPI.Controllers
                     //increment count for team
                     team.playerCount += 1;
                     await context.SaveChangesAsync();
-                    return Ok("Added" + player + "from" + team);
+                    return Ok("Added" + player.FirstName + player.LastName + "to" + team.Name);
 
                 default:
                     return NotFound("Improper search query");
