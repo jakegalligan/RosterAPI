@@ -158,10 +158,10 @@ namespace TeamListAPI.Controllers
                         }
                     //remove player from team
                      player.TeamId = 0;
-                     team.playerCount -= 1;
+                     team.PlayerCount -= 1;
                      context.SaveChanges();
                     //return a response showing the player and team which the player was removed from
-                     return Ok("Removed" + player.FirstName + player.LastName + "from" + team.Name);
+                     return Ok("Removed " + player.FirstName + " " + player.LastName + " from " + team.Name);
 
                 case "add":
                     //check if the player is currently on another team
@@ -175,16 +175,16 @@ namespace TeamListAPI.Controllers
                             return NotFound("Player already on team");
                         }
                     //if team has more 8 players already return error
-                        if (team.playerCount == 8)
+                        if (team.PlayerCount == 8)
                         {
                             return NotFound("Unable to add player, roster limit of 8 exceeded");
                         }
                     //add player to team
                     player.TeamId= team.Id;
                     //increment count for team
-                    team.playerCount += 1;
+                    team.PlayerCount += 1;
                     await context.SaveChangesAsync();
-                    return Ok("Added" + player.FirstName + player.LastName + "to" + team.Name);
+                    return Ok("Added " + player.FirstName + " " + player.LastName + " to " + team.Name);
 
                 default:
                     return NotFound("Improper search query");
