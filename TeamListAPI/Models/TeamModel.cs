@@ -16,11 +16,7 @@ namespace TeamListAPI.Models
         [Required(ErrorMessage = "Team Location is required")]
         public string Location { get; set; }
         public int PlayerCount { get; set; }
-        public ICollection<Player> PlayerList { get; set; }
 
-        public Team()
-        {
-            PlayerList = new List<Player>();
-        }
+ 
     }
 }
